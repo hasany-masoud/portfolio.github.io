@@ -1,0 +1,1255 @@
+<title>Masoud Hasany — DTU Construct</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Figtree:wght@300;400;500;600&family=JetBrains+Mono:wght@400&display=swap">
+
+<style>
+/* ─── Design Tokens ─── */
+:root {
+  --bg:          #F4F5F3;
+  --surface:     #FFFFFF;
+  --surface-alt: #ECEEED;
+  --text:        #1A2B2E;
+  --text-sec:    #567478;
+  --text-muted:  #8FA6AA;
+  --accent:      #4A9B8E;
+  --accent-sub:  rgba(74,155,142,.10);
+  --accent-hov:  #3B857A;
+  --copper:      #B56A24;
+  --border:      rgba(26,43,46,.09);
+  --border-soft: rgba(26,43,46,.05);
+  --radius:      6px;
+  --nav-h:       60px;
+  --max-w:       1160px;
+  --ff-d:        'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --ff-b:        'Figtree', system-ui, -apple-system, sans-serif;
+  --ff-m:        'JetBrains Mono', 'Courier New', monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:          #0D191B;
+    --surface:     #132022;
+    --surface-alt: #192E31;
+    --text:        #E3EEEC;
+    --text-sec:    #7AACAA;
+    --text-muted:  #4D7A7E;
+    --accent:      #5CC1B3;
+    --accent-sub:  rgba(92,193,179,.10);
+    --accent-hov:  #72D4C6;
+    --copper:      #D08B40;
+    --border:      rgba(227,238,236,.09);
+    --border-soft: rgba(227,238,236,.05);
+  }
+}
+:root[data-theme="dark"] {
+  --bg:          #0D191B;
+  --surface:     #132022;
+  --surface-alt: #192E31;
+  --text:        #E3EEEC;
+  --text-sec:    #7AACAA;
+  --text-muted:  #4D7A7E;
+  --accent:      #5CC1B3;
+  --accent-sub:  rgba(92,193,179,.10);
+  --accent-hov:  #72D4C6;
+  --copper:      #D08B40;
+  --border:      rgba(227,238,236,.09);
+  --border-soft: rgba(227,238,236,.05);
+}
+
+/* ─── Reset & Base ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  font-family: var(--ff-b);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+button { cursor: pointer; font: inherit; border: none; background: none; }
+
+/* ─── Layout ─── */
+.container {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 40px;
+}
+section { padding: 100px 0; }
+section + section { border-top: 1px solid var(--border-soft); }
+
+/* ─── Section Labels (copper eyebrows) ─── */
+.eyebrow {
+  font-family: var(--ff-m);
+  font-size: 10px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--copper);
+  display: block;
+  margin-bottom: 14px;
+}
+
+/* ─── Section Headings ─── */
+.section-title {
+  font-family: var(--ff-d);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 300;
+  line-height: 1.15;
+  text-wrap: balance;
+  color: var(--text);
+  margin-bottom: 56px;
+}
+
+/* ─── Nav ─── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--nav-h);
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  z-index: 100;
+  transition: background .2s;
+}
+.nav-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 40px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.nav-logo {
+  font-family: var(--ff-d);
+  font-weight: 600;
+  font-size: 1.1rem;
+  letter-spacing: .01em;
+  color: var(--text);
+  transition: color .2s;
+}
+.nav-logo:hover { color: var(--accent); }
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  list-style: none;
+}
+.nav-links a {
+  font-size: .8rem;
+  font-weight: 500;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--text-sec);
+  transition: color .2s;
+  position: relative;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -3px; left: 0; right: 0;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .25s ease;
+}
+.nav-links a:hover { color: var(--text); }
+.nav-links a:hover::after { transform: scaleX(1); }
+.nav-theme {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-muted);
+  font-size: .85rem;
+  transition: border-color .2s, color .2s;
+}
+.nav-theme:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ─── Hero ─── */
+#home {
+  padding-top: calc(var(--nav-h) + 80px);
+  padding-bottom: 100px;
+  position: relative;
+  overflow: hidden;
+  min-height: 92vh;
+  display: flex;
+  align-items: center;
+}
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 60px;
+  align-items: center;
+  width: 100%;
+}
+.hero-text { position: relative; z-index: 2; }
+.hero-name {
+  font-family: var(--ff-d);
+  font-weight: 300;
+  font-size: clamp(3.5rem, 8vw, 7.5rem);
+  line-height: 1.0;
+  letter-spacing: -.01em;
+  color: var(--text);
+  margin-bottom: 8px;
+  text-wrap: balance;
+}
+.hero-name em {
+  font-style: italic;
+  color: var(--accent);
+  font-weight: 300;
+}
+.hero-role {
+  font-size: .95rem;
+  font-weight: 500;
+  color: var(--text-sec);
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+}
+.hero-role span {
+  display: inline-block;
+  padding: 0 10px;
+  color: var(--text-muted);
+}
+.hero-tagline {
+  font-family: var(--ff-d);
+  font-size: clamp(1.1rem, 2vw, 1.4rem);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--text-sec);
+  max-width: 52ch;
+  line-height: 1.5;
+  margin-bottom: 40px;
+}
+.hero-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.hero-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 20px;
+  border-radius: var(--radius);
+  font-size: .8rem;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  transition: all .2s;
+}
+.hero-link.primary {
+  background: var(--accent);
+  color: #fff;
+}
+.hero-link.primary:hover { background: var(--accent-hov); }
+.hero-link.secondary {
+  border: 1px solid var(--border);
+  color: var(--text-sec);
+}
+.hero-link.secondary:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.hero-canvas-wrap {
+  position: relative;
+}
+#hero-canvas {
+  display: block;
+  width: 100%;
+  border-radius: 12px;
+  opacity: .7;
+}
+
+/* ─── About ─── */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 80px;
+  align-items: start;
+}
+.about-bio p {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--text);
+  max-width: 60ch;
+  margin-bottom: 1.5em;
+}
+.about-bio p:last-child { margin-bottom: 0; }
+.about-bio strong { font-weight: 600; }
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 28px;
+}
+.tag {
+  font-family: var(--ff-m);
+  font-size: .72rem;
+  letter-spacing: .06em;
+  padding: 5px 12px;
+  border-radius: 99px;
+  border: 1px solid var(--border);
+  color: var(--text-sec);
+  background: var(--surface);
+}
+.stats-col {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding-top: 8px;
+}
+.stat {
+  padding: 24px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
+.stat-num {
+  font-family: var(--ff-d);
+  font-size: 2.8rem;
+  font-weight: 300;
+  line-height: 1;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 4px;
+}
+.stat-num em { color: var(--accent); font-style: normal; }
+.stat-label {
+  font-size: .78rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+
+/* ─── Research Cards ─── */
+.research-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+.research-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 36px;
+  transition: border-color .25s, transform .25s;
+  display: flex;
+  flex-direction: column;
+}
+.research-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-3px);
+}
+.card-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--ff-m);
+  font-size: .68rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 99px;
+  margin-bottom: 20px;
+  width: fit-content;
+}
+.card-status.active {
+  color: var(--accent);
+  background: var(--accent-sub);
+}
+.card-status.active::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.card-status.completed {
+  color: var(--text-muted);
+  background: var(--surface-alt);
+}
+.card-title {
+  font-family: var(--ff-d);
+  font-size: 1.35rem;
+  font-weight: 400;
+  line-height: 1.3;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+.card-desc {
+  font-size: .9rem;
+  color: var(--text-sec);
+  line-height: 1.7;
+  flex: 1;
+  margin-bottom: 24px;
+}
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.card-tag {
+  font-size: .72rem;
+  font-family: var(--ff-m);
+  padding: 3px 10px;
+  border-radius: 4px;
+  background: var(--surface-alt);
+  color: var(--text-muted);
+  letter-spacing: .04em;
+}
+
+/* ─── Publications ─── */
+.pub-filters {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 40px;
+  padding: 4px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  width: fit-content;
+}
+.pub-filter {
+  padding: 6px 18px;
+  border-radius: 4px;
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  transition: all .18s;
+}
+.pub-filter.active {
+  background: var(--accent);
+  color: #fff;
+}
+.pub-filter:hover:not(.active) { color: var(--text); }
+
+.pub-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.pub-item {
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
+  gap: 20px 28px;
+  align-items: start;
+  padding: 28px 0;
+  border-bottom: 1px solid var(--border-soft);
+  transition: opacity .2s;
+}
+.pub-item:first-child { border-top: 1px solid var(--border-soft); }
+.pub-year {
+  font-family: var(--ff-m);
+  font-size: .78rem;
+  color: var(--text-muted);
+  padding-top: 3px;
+  font-variant-numeric: tabular-nums;
+}
+.pub-body {}
+.pub-title {
+  font-family: var(--ff-d);
+  font-size: 1.1rem;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.pub-authors {
+  font-size: .82rem;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+.pub-authors strong { color: var(--text-sec); font-weight: 600; }
+.pub-venue {
+  font-size: .82rem;
+  font-style: italic;
+  color: var(--text-sec);
+}
+.pub-venue .journal-name { font-weight: 600; font-style: normal; }
+.pub-type {
+  font-family: var(--ff-m);
+  font-size: .66rem;
+  letter-spacing: .08em;
+  padding: 3px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  height: fit-content;
+}
+.pub-type.journal {
+  background: var(--accent-sub);
+  color: var(--accent);
+}
+.pub-type.conference {
+  background: var(--surface-alt);
+  color: var(--text-muted);
+}
+.pub-type.review {
+  border: 1px solid var(--border);
+  color: var(--copper);
+}
+.pub-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: .75rem;
+  font-weight: 600;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-top: 10px;
+  transition: color .18s;
+}
+.pub-link:hover { color: var(--copper); }
+
+/* ─── Teaching ─── */
+.teaching-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.teaching-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 20px;
+  align-items: center;
+  padding: 28px 0;
+  border-bottom: 1px solid var(--border-soft);
+}
+.teaching-item:first-child { border-top: 1px solid var(--border-soft); }
+.teaching-code {
+  font-family: var(--ff-m);
+  font-size: .72rem;
+  letter-spacing: .08em;
+  color: var(--accent);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+.teaching-course {
+  font-family: var(--ff-d);
+  font-size: 1.15rem;
+  font-weight: 400;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.teaching-meta {
+  font-size: .82rem;
+  color: var(--text-muted);
+}
+.teaching-badge {
+  font-family: var(--ff-m);
+  font-size: .7rem;
+  letter-spacing: .06em;
+  padding: 6px 14px;
+  border-radius: 99px;
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+.teaching-badge.grad {
+  background: var(--accent-sub);
+  color: var(--accent);
+}
+.teaching-badge.undergrad {
+  background: var(--surface-alt);
+  color: var(--text-muted);
+}
+
+/* ─── Contact ─── */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+.contact-text {
+  font-family: var(--ff-d);
+  font-size: clamp(1.2rem, 2.5vw, 1.7rem);
+  font-weight: 300;
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--text-sec);
+  margin-bottom: 36px;
+  max-width: 42ch;
+}
+.contact-links {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.contact-link {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: .9rem;
+  color: var(--text-sec);
+  transition: color .2s;
+  group: true;
+}
+.contact-link:hover { color: var(--accent); }
+.contact-link .icon {
+  width: 38px; height: 38px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+  transition: border-color .2s, background .2s;
+}
+.contact-link:hover .icon {
+  border-color: var(--accent);
+  background: var(--accent-sub);
+}
+.contact-info-block {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.contact-address {
+  padding: 28px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.contact-address h4 {
+  font-family: var(--ff-m);
+  font-size: .72rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--copper);
+  margin-bottom: 12px;
+}
+.contact-address p {
+  font-size: .88rem;
+  line-height: 1.8;
+  color: var(--text-sec);
+}
+.contact-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: var(--radius);
+  font-size: .82rem;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  transition: background .2s;
+  margin-top: 8px;
+  width: fit-content;
+}
+.contact-cta:hover { background: var(--accent-hov); }
+
+/* ─── Footer ─── */
+footer {
+  border-top: 1px solid var(--border-soft);
+  padding: 36px 0;
+}
+.footer-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.footer-sig {
+  font-family: var(--ff-d);
+  font-size: .9rem;
+  font-style: italic;
+  color: var(--text-muted);
+}
+.footer-copy {
+  font-family: var(--ff-m);
+  font-size: .7rem;
+  color: var(--text-muted);
+  letter-spacing: .05em;
+}
+
+/* ─── Focus visible ─── */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+/* ─── Reduced motion ─── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+  html { scroll-behavior: auto; }
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 900px) {
+  .container { padding: 0 24px; }
+  section { padding: 72px 0; }
+  .hero-inner { grid-template-columns: 1fr; }
+  .hero-canvas-wrap { display: none; }
+  .about-grid { grid-template-columns: 1fr; gap: 48px; }
+  .contact-grid { grid-template-columns: 1fr; gap: 48px; }
+  .nav-links { gap: 20px; }
+  .pub-item { grid-template-columns: 44px 1fr; }
+  .pub-item .pub-type { display: none; }
+  .footer-inner { flex-direction: column; gap: 8px; text-align: center; }
+}
+@media (max-width: 640px) {
+  .nav-links li:not(:last-child):not(:nth-last-child(2)) { display: none; }
+  .teaching-item { grid-template-columns: 1fr; }
+}
+</style>
+
+<!-- ─── NAV ─── -->
+<nav>
+  <div class="nav-inner">
+    <a href="#home" class="nav-logo">Masoud Hasany</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#research">Research</a></li>
+      <li><a href="#publications">Publications</a></li>
+      <li><a href="#teaching">Teaching</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li>
+        <button class="nav-theme" id="theme-toggle" aria-label="Toggle theme">☽</button>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section id="home">
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-text">
+        <p class="hero-name">
+          Masoud<br><em>Hasany</em>
+        </p>
+        <p class="hero-role">
+          Tenure Track Researcher / Assistant Professor <span>·</span> DTU Construct <span>·</span> Technical University of Denmark
+        </p>
+        <p class="hero-tagline">
+          Designing functional and sustainable materials at the convergence of materials science, nanobiotechnology, and biomedical engineering — from wearable hydrogel electronics to tissue scaffolds.
+        </p>
+        <div class="hero-links">
+          <a href="#publications" class="hero-link primary">Publications</a>
+          <a href="mailto:mahas@dtu.dk" class="hero-link secondary">mahas@dtu.dk</a>
+          <a href="https://orbit.dtu.dk/en/persons/masoud-hasany" target="_blank" rel="noopener" class="hero-link secondary">DTU Profile ↗</a>
+          <a href="https://orcid.org/0000-0002-1407-257X" target="_blank" rel="noopener" class="hero-link secondary">ORCID ↗</a>
+        </div>
+      </div>
+      <div class="hero-canvas-wrap">
+        <canvas id="hero-canvas" width="360" height="480" aria-hidden="true"></canvas>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── ABOUT ─── -->
+<section id="about">
+  <div class="container">
+    <span class="eyebrow">About</span>
+    <div class="about-grid">
+      <div class="about-bio">
+        <p>
+          I am a materials scientist and researcher at <strong>DTU Construct</strong>, working at the intersection of materials science, chemistry, nanobiotechnology, and biomedical engineering. My research focuses on designing <strong>functional and sustainable materials</strong> with applications ranging from biomaterials and tissue engineering to flexible electronics, energy storage, sensing, and advanced manufacturing.
+        </p>
+        <p>
+          I am particularly interested in understanding how the <strong>chemistry, structure, and interfaces of materials</strong> can be engineered to achieve new functionalities and improved performance. Throughout my career, I have worked across disciplines and collaborated with researchers from academia, healthcare, and industry, combining material design, experimental characterization, and application-driven research.
+        </p>
+        <p>
+          I am passionate about translating fundamental scientific ideas into practical technologies and creating collaborations that bridge the gap between materials research and real-world applications. Previously, I was a <strong>Marie Skłodowska-Curie postdoctoral fellow</strong> at DTU and a postdoctoral researcher at Geneva University Hospitals. I am co-applicant in a <strong>DFF Green Transition grant</strong> (7.2 million DKK, 2025).
+        </p>
+        <div class="tags">
+          <span class="tag">Hydrogels</span>
+          <span class="tag">Wearable Electronics</span>
+          <span class="tag">Tissue Engineering</span>
+          <span class="tag">Biomaterials</span>
+          <span class="tag">Flexible Electronics</span>
+          <span class="tag">Energy Storage</span>
+          <span class="tag">Nanobiotechnology</span>
+          <span class="tag">Soft Robotics</span>
+          <span class="tag">Sensing &amp; Actuation</span>
+          <span class="tag">Advanced Manufacturing</span>
+        </div>
+      </div>
+      <div class="stats-col">
+        <div class="stat">
+          <div class="stat-num">40<em>+</em></div>
+          <div class="stat-label">ISI Journal Papers</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">23</div>
+          <div class="stat-label">h-Index</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">8</div>
+          <div class="stat-label">Students &amp; Researchers Supervised</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">7<em>.2M</em></div>
+          <div class="stat-label">DKK Grant Funding (DFF, 2025)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── RESEARCH ─── -->
+<section id="research">
+  <div class="container">
+    <span class="eyebrow">Research</span>
+    <h2 class="section-title">Current Projects</h2>
+    <div class="research-grid">
+
+      <div class="research-card">
+        <span class="card-status active">Active · DFF Green Transition 2025</span>
+        <h3 class="card-title">Sustainable Hydrogel Materials for Green Technology Applications</h3>
+        <p class="card-desc">
+          Co-leading a 7.2 million DKK DFF-funded project developing sustainable, functional hydrogel-based materials for green technology. Focuses on environmentally responsible material design without compromising performance in energy and sensing applications.
+        </p>
+        <div class="card-tags">
+          <span class="card-tag">Green Materials</span>
+          <span class="card-tag">Sustainability</span>
+          <span class="card-tag">Hydrogels</span>
+          <span class="card-tag">Energy</span>
+        </div>
+      </div>
+
+      <div class="research-card">
+        <span class="card-status active">Active</span>
+        <h3 class="card-title">Wearable Hydrogel Electronics for Health Monitoring</h3>
+        <p class="card-desc">
+          Designing ultra-stretchable, super-tough, ion-doped hydrogels that function simultaneously as structural, sensing, and conducting elements in wearable platforms — from smart socks for edema monitoring to wireless human motion sensing systems.
+        </p>
+        <div class="card-tags">
+          <span class="card-tag">Ionic Hydrogels</span>
+          <span class="card-tag">Strain Sensors</span>
+          <span class="card-tag">Human Motion</span>
+          <span class="card-tag">Soft Robotics</span>
+        </div>
+      </div>
+
+      <div class="research-card">
+        <span class="card-status active">Active</span>
+        <h3 class="card-title">Hydrogel Electrolytes for Flexible Energy Storage</h3>
+        <p class="card-desc">
+          Engineering atmosphere-stable, anti-fire hydrogel electrolytes using hygroscopic ion-doping strategies. Achieves super-tough, freeze-resistant behaviour suitable for next-generation wearable batteries and supercapacitors operating in real-world conditions.
+        </p>
+        <div class="card-tags">
+          <span class="card-tag">Electrolytes</span>
+          <span class="card-tag">Energy Storage</span>
+          <span class="card-tag">Li-ion Doping</span>
+          <span class="card-tag">Flexible Devices</span>
+        </div>
+      </div>
+
+      <div class="research-card">
+        <span class="card-status active">Active</span>
+        <h3 class="card-title">Bioadhesive &amp; Self-Healing Hydrogels for Tissue Repair</h3>
+        <p class="card-desc">
+          Developing bioadhesive, self-healing hydrogel platforms with tunable chemical functionality for chronic wound care and tissue engineering. Integrates diverse crosslinking chemistries and nanocomposite reinforcement for clinically translatable wound dressings and scaffolds.
+        </p>
+        <div class="card-tags">
+          <span class="card-tag">Bioadhesion</span>
+          <span class="card-tag">Self-Healing</span>
+          <span class="card-tag">Wound Care</span>
+          <span class="card-tag">Tissue Engineering</span>
+        </div>
+      </div>
+
+      <div class="research-card">
+        <span class="card-status active">Active</span>
+        <h3 class="card-title">Injectable Hydrogels for Bone Augmentation</h3>
+        <p class="card-desc">
+          Combining organic and inorganic phases in tough, injectable, self-setting cement-based hydrogels for minimally invasive bone augmentation. Validated in vitro and ex vivo as a strategy for noninvasive orthopaedic repair without open surgery.
+        </p>
+        <div class="card-tags">
+          <span class="card-tag">Injectable Systems</span>
+          <span class="card-tag">Bone Repair</span>
+          <span class="card-tag">Cement Hydrogels</span>
+          <span class="card-tag">Orthopaedics</span>
+        </div>
+      </div>
+
+      <div class="research-card">
+        <span class="card-status completed">Completed · MSCA Fellowship</span>
+        <h3 class="card-title">Silk-Graphene Hydrogels for Unbreakable Bionics</h3>
+        <p class="card-desc">
+          Developed multifunctional, self-healing silk-graphene hydrogels enabling the manufacture of unbreakable bionic devices. The material platform demonstrated direct implications for soft robotics, human–machine interfaces, and 3D-printed electronics.
+        </p>
+        <div class="card-tags">
+          <span class="card-tag">Silk Hydrogels</span>
+          <span class="card-tag">Graphene</span>
+          <span class="card-tag">Soft Robotics</span>
+          <span class="card-tag">3D-Printed Electronics</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─── PUBLICATIONS ─── -->
+<section id="publications">
+  <div class="container">
+    <span class="eyebrow">Publications</span>
+    <h2 class="section-title">Selected Works</h2>
+
+    <div class="pub-filters" role="group" aria-label="Filter publications">
+      <button class="pub-filter active" data-filter="all">All</button>
+      <button class="pub-filter" data-filter="journal">Journal</button>
+      <button class="pub-filter" data-filter="conference">Conference</button>
+      <button class="pub-filter" data-filter="review">Review</button>
+    </div>
+
+    <div class="pub-list" id="pub-list">
+
+      <div class="pub-item" data-type="journal">
+        <span class="pub-year">2026</span>
+        <div class="pub-body">
+          <p class="pub-title">Wearable Multifunctional Hydrogel for Energy-Autonomous Edema Monitoring</p>
+          <p class="pub-authors">A.R. Akhiani, M. Kohestanian, <strong>M. Hasany</strong>, F.B. Kadumudi, P. Jin, A. Najafi Tireh Shabankareh, A. Dolatshahi-Pirouz, M. Mehrali</p>
+          <p class="pub-venue"><span class="journal-name">Advanced Functional Materials</span>, 36 · IF 19</p>
+          <a href="https://doi.org/10.1002/adfm.202522340" target="_blank" rel="noopener" class="pub-link">DOI ↗</a>
+        </div>
+        <span class="pub-type journal">Journal</span>
+      </div>
+
+      <div class="pub-item" data-type="journal">
+        <span class="pub-year">2025</span>
+        <div class="pub-body">
+          <p class="pub-title">Ultra-stretchable, Super-tough, and Highly Stable Ion-doped Hydrogel for Advanced Robotic Applications and Human Motion Sensing</p>
+          <p class="pub-authors"><strong>M. Hasany</strong>, M. Kohestanian, A. Najafi Tireh Shabankareh, P. Nezhad-Mokhtari, M. Mehrali</p>
+          <p class="pub-venue"><span class="journal-name">InfoMat</span> (2025) · IF 22.7</p>
+          <a href="https://doi.org/10.1002/inf2.12655" target="_blank" rel="noopener" class="pub-link">DOI ↗</a>
+        </div>
+        <span class="pub-type journal">Journal</span>
+      </div>
+
+      <div class="pub-item" data-type="journal">
+        <span class="pub-year">2024</span>
+        <div class="pub-body">
+          <p class="pub-title">Hygroscopic Nature of Lithium Ions: A Simple Key to Super Tough Atmosphere-Stable Hydrogel Electrolytes</p>
+          <p class="pub-authors"><strong>M. Hasany</strong>, M. Kohestanian, B. Rezaei, S.S. Keller, M. Mehrali</p>
+          <p class="pub-venue"><span class="journal-name">ACS Nano</span> (2024) · IF 15.8</p>
+          <a href="https://doi.org/10.1021/acsnano.4c08687" target="_blank" rel="noopener" class="pub-link">DOI ↗</a>
+        </div>
+        <span class="pub-type journal">Journal</span>
+      </div>
+
+      <div class="pub-item" data-type="review">
+        <span class="pub-year">2024</span>
+        <div class="pub-body">
+          <p class="pub-title">Recent Advancements in Bioadhesive Self-healing Hydrogels for Effective Chronic Wound Care</p>
+          <p class="pub-authors">P. Nezhad-Mokhtari, <strong>M. Hasany</strong>, M. Kohestanian, A. Dolatshahi-Pirouz, M. Milani, M. Mehrali <em>(co-first authorship)</em></p>
+          <p class="pub-venue"><span class="journal-name">Advances in Colloid and Interface Science</span>, 334 · IF 15.9</p>
+          <a href="https://doi.org/10.1016/j.cis.2024.103306" target="_blank" rel="noopener" class="pub-link">DOI ↗</a>
+        </div>
+        <span class="pub-type review">Review</span>
+      </div>
+
+      <div class="pub-item" data-type="journal">
+        <span class="pub-year">2023</span>
+        <div class="pub-body">
+          <p class="pub-title">Fabricating of a Custom 3D-Printed Setup for Evaluating Gel-Based Strain Sensors</p>
+          <p class="pub-authors">M. Kohestanian, <strong>M. Hasany</strong>, A. Najafi Tireh Shabankareh, M. Mehrali <em>(co-first authorship)</em></p>
+          <p class="pub-venue"><span class="journal-name">Alexandria Engineering Journal</span> (2023) · IF 8.2</p>
+          <a href="#" class="pub-link">DOI ↗</a>
+        </div>
+        <span class="pub-type journal">Journal</span>
+      </div>
+
+      <div class="pub-item" data-type="journal">
+        <span class="pub-year">2023</span>
+        <div class="pub-body">
+          <p class="pub-title">A Tough Injectable Self-setting Cement-based Hydrogel for Noninvasive Bone Augmentation</p>
+          <p class="pub-authors">P. Jin, M. Xia, <strong>M. Hasany</strong>, P. Feng, J. Bai, J. Gao, W. Zhang, M. Mehrali, R. Wang <em>(co-first authorship)</em></p>
+          <p class="pub-venue"><span class="journal-name">Interdisciplinary Materials</span> (2023) · IF 24.5</p>
+          <a href="https://doi.org/10.1002/idm2.12119" target="_blank" rel="noopener" class="pub-link">DOI ↗</a>
+        </div>
+        <span class="pub-type journal">Journal</span>
+      </div>
+
+      <div class="pub-item" data-type="review">
+        <span class="pub-year">2021</span>
+        <div class="pub-body">
+          <p class="pub-title">Biodegradation of Carbon-Based Nanomaterials: The Importance of "Biomolecular Corona" Consideration</p>
+          <p class="pub-authors">A. Mokhtari-Farsani, <strong>M. Hasany</strong>, I. Lynch, M. Mehrali <em>(co-first authorship)</em></p>
+          <p class="pub-venue"><span class="journal-name">Advanced Functional Materials</span> (2021) · IF 19</p>
+          <a href="https://doi.org/10.1002/adfm.202105649" target="_blank" rel="noopener" class="pub-link">DOI ↗</a>
+        </div>
+        <span class="pub-type review">Review</span>
+      </div>
+
+      <div class="pub-item" data-type="journal">
+        <span class="pub-year">2021</span>
+        <div class="pub-body">
+          <p class="pub-title">The Manufacture of Unbreakable Bionics via Multifunctional and Self-Healing Silk-Graphene Hydrogels</p>
+          <p class="pub-authors">F.B. Kadumudi, <strong>M. Hasany</strong>, M.K. Pierchala, M. Jahanshahi, N. Taebnia, M. Mehrali, C.F. Mitu, M.-A. Shahbazi, T.-G. Zsurzsan, A. Knott, T.L. Andresen, A. Dolatshahi-Pirouz</p>
+          <p class="pub-venue"><span class="journal-name">Advanced Materials</span>, 29 (2021) · IF 30.85</p>
+          <a href="https://doi.org/10.1002/adma.202100047" target="_blank" rel="noopener" class="pub-link">DOI ↗</a>
+        </div>
+        <span class="pub-type journal">Journal</span>
+      </div>
+
+      <div class="pub-item" data-type="review">
+        <span class="pub-year">2021</span>
+        <div class="pub-body">
+          <p class="pub-title">Synthesis, Properties, and Biomedical Applications of Alginate Methacrylate (ALMA)-based Hydrogels: Current Advances and Challenges</p>
+          <p class="pub-authors"><strong>M. Hasany</strong>, S. Talebian, S. Sadat, N. Ranjbar, M. Mehrali, G.G. Wallace, M. Mehrali</p>
+          <p class="pub-venue"><span class="journal-name">Applied Materials Today</span>, 24 (2021) · IF 8.3</p>
+          <a href="https://doi.org/10.1016/j.apmt.2021.101150" target="_blank" rel="noopener" class="pub-link">DOI ↗</a>
+        </div>
+        <span class="pub-type review">Review</span>
+      </div>
+
+      <div class="pub-item" data-type="journal">
+        <span class="pub-year">2018</span>
+        <div class="pub-body">
+          <p class="pub-title">Combinatorial Screening of Nanoclay Reinforced Hydrogels: A Glimpse of the "Holy Grail" in Orthopedic Stem Cell Therapy?</p>
+          <p class="pub-authors"><strong>M. Hasany</strong>, A. Thakur, N. Taebnia, F.B. Kadumudi, M.A. Shahbazi, M.K. Pierchala, S. Mohanty, G. Orive, T.L. Andresen, C.B. Foldager, S. Yaghmaei, A. Arpanaei, A.K. Gaharwar, M. Mehrali, A. Dolatshahi-Pirouz</p>
+          <p class="pub-venue"><span class="journal-name">ACS Applied Materials &amp; Interfaces</span> (2018) · IF 9.5</p>
+          <a href="https://doi.org/10.1021/acsami.8b11436" target="_blank" rel="noopener" class="pub-link">DOI ↗</a>
+        </div>
+        <span class="pub-type journal">Journal</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─── TEACHING ─── -->
+<section id="teaching">
+  <div class="container">
+    <span class="eyebrow">Teaching</span>
+    <h2 class="section-title">Courses</h2>
+    <div class="teaching-list">
+
+      <div class="teaching-item">
+        <div>
+          <p class="teaching-code">DTU Construct · 2026</p>
+          <p class="teaching-course">Design and Build 1</p>
+          <p class="teaching-meta">DTU Construct, Technical University of Denmark</p>
+        </div>
+        <span class="teaching-badge undergrad">Undergraduate</span>
+      </div>
+
+      <div class="teaching-item">
+        <div>
+          <p class="teaching-code">DTU Construct · 2025</p>
+          <p class="teaching-course">Project Course in Materials Engineering</p>
+          <p class="teaching-meta">DTU Construct, Technical University of Denmark</p>
+        </div>
+        <span class="teaching-badge grad">Graduate</span>
+      </div>
+
+      <div class="teaching-item">
+        <div>
+          <p class="teaching-code">DTU Construct · 2024</p>
+          <p class="teaching-course">Special Course on Rheological Properties of Materials</p>
+          <p class="teaching-meta">DTU Construct, Technical University of Denmark</p>
+        </div>
+        <span class="teaching-badge grad">Graduate</span>
+      </div>
+
+      <div class="teaching-item">
+        <div>
+          <p class="teaching-code">DTU Construct · 2024</p>
+          <p class="teaching-course">Materials in Advanced Applications and Products</p>
+          <p class="teaching-meta">DTU Construct, Technical University of Denmark</p>
+        </div>
+        <span class="teaching-badge grad">Graduate</span>
+      </div>
+
+      <div class="teaching-item">
+        <div>
+          <p class="teaching-code">DTU Nanotech · 2017</p>
+          <p class="teaching-course">Summer Course on 3D Engineered Materials</p>
+          <p class="teaching-meta">DTU Nanotech, Technical University of Denmark</p>
+        </div>
+        <span class="teaching-badge grad">Graduate</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─── CONTACT ─── -->
+<section id="contact">
+  <div class="container">
+    <span class="eyebrow">Contact</span>
+    <h2 class="section-title">Get in Touch</h2>
+    <div class="contact-grid">
+      <div>
+        <p class="contact-text">
+          "Open to collaborations, PhD and postdoc inquiries, seminar invitations, and conversations at the intersection of materials science and real-world application."
+        </p>
+        <div class="contact-links">
+          <a href="mailto:mahas@dtu.dk" class="contact-link">
+            <span class="icon">✉</span>
+            mahas@dtu.dk
+          </a>
+          <a href="https://orbit.dtu.dk/en/persons/masoud-hasany" target="_blank" rel="noopener" class="contact-link">
+            <span class="icon">◈</span>
+            DTU Research Profile
+          </a>
+          <a href="https://orcid.org/0000-0002-1407-257X" target="_blank" rel="noopener" class="contact-link">
+            <span class="icon">◎</span>
+            ORCID · 0000-0002-1407-257X
+          </a>
+          <a href="https://www.scopus.com/authid/detail.uri?authorId=56719672800" target="_blank" rel="noopener" class="contact-link">
+            <span class="icon">S</span>
+            Scopus Profile
+          </a>
+        </div>
+        <a href="mailto:mahas@dtu.dk" class="contact-cta">Get in Touch →</a>
+      </div>
+      <div class="contact-info-block">
+        <div class="contact-address">
+          <h4>Office</h4>
+          <p>
+            Building 425, Room 132<br>
+            Produktionstorvet<br>
+            DTU Construct, Technical University of Denmark<br>
+            2800 Kgs. Lyngby, Denmark
+          </p>
+        </div>
+        <div class="contact-address">
+          <h4>Open Positions</h4>
+          <p>
+            I welcome applications from motivated PhD candidates and postdoctoral researchers interested in functional hydrogels, wearable electronics, or sustainable materials. Please send a CV and a brief statement of interest to the email above.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-inner">
+    <span class="footer-sig">Masoud Hasany, Ph.D. — DTU Construct</span>
+    <span class="footer-copy">© 2026 · Technical University of Denmark</span>
+  </div>
+</footer>
+
+<!-- ─── SCRIPTS ─── -->
+<script>
+/* ── Theme toggle ── */
+const toggle = document.getElementById('theme-toggle');
+const root   = document.documentElement;
+let theme = localStorage.getItem('theme') || 'system';
+
+function applyTheme(t) {
+  if (t === 'dark')  { root.setAttribute('data-theme', 'dark');  toggle.textContent = '☀'; }
+  else if (t === 'light') { root.setAttribute('data-theme', 'light'); toggle.textContent = '☽'; }
+  else { root.removeAttribute('data-theme'); toggle.textContent = '☽'; }
+}
+try { applyTheme(theme); } catch(e) {}
+
+toggle.addEventListener('click', () => {
+  const dark = root.getAttribute('data-theme') === 'dark' ||
+               (!root.getAttribute('data-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  theme = dark ? 'light' : 'dark';
+  try { localStorage.setItem('theme', theme); } catch(e) {}
+  applyTheme(theme);
+});
+
+/* ── Publication filter ── */
+const filters  = document.querySelectorAll('.pub-filter');
+const pubItems = document.querySelectorAll('.pub-item');
+
+filters.forEach(btn => {
+  btn.addEventListener('click', () => {
+    filters.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const f = btn.dataset.filter;
+    pubItems.forEach(item => {
+      item.style.display = (f === 'all' || item.dataset.type === f) ? '' : 'none';
+    });
+  });
+});
+
+/* ── Polymer network canvas ── */
+(function () {
+  const canvas = document.getElementById('hero-canvas');
+  if (!canvas) return;
+  const ctx    = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+
+  // Seed random points
+  const N = 42;
+  const nodes = Array.from({ length: N }, () => ({
+    x: Math.random() * W,
+    y: Math.random() * H,
+    r: 2 + Math.random() * 2.5
+  }));
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    // Detect color scheme for accent
+    const dark = root.getAttribute('data-theme') === 'dark' ||
+                 (!root.getAttribute('data-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    const accent = dark ? '#5CC1B3' : '#4A9B8E';
+
+    // Draw edges between nearby nodes (threshold-based adjacency)
+    const THRESHOLD = 110;
+    for (let i = 0; i < N; i++) {
+      for (let j = i + 1; j < N; j++) {
+        const dx = nodes[i].x - nodes[j].x;
+        const dy = nodes[i].y - nodes[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < THRESHOLD) {
+          const alpha = (1 - dist / THRESHOLD) * 0.28;
+          ctx.beginPath();
+          ctx.moveTo(nodes[i].x, nodes[i].y);
+          ctx.lineTo(nodes[j].x, nodes[j].y);
+          ctx.strokeStyle = accent;
+          ctx.globalAlpha = alpha;
+          ctx.lineWidth = 0.8;
+          ctx.stroke();
+        }
+      }
+    }
+
+    // Draw nodes
+    nodes.forEach(n => {
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+      ctx.fillStyle = accent;
+      ctx.globalAlpha = 0.4;
+      ctx.fill();
+    });
+    ctx.globalAlpha = 1;
+  }
+
+  draw();
+
+  // Redraw on theme change
+  const observer = new MutationObserver(() => draw());
+  observer.observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => draw());
+})();
+
+/* ── Active nav link on scroll ── */
+const sections = document.querySelectorAll('section[id]');
+const navLinks  = document.querySelectorAll('.nav-links a');
+
+function onScroll() {
+  let current = '';
+  sections.forEach(sec => {
+    if (window.scrollY >= sec.offsetTop - 100) current = sec.id;
+  });
+  navLinks.forEach(a => {
+    a.style.color = a.getAttribute('href') === '#' + current ? 'var(--accent)' : '';
+  });
+}
+window.addEventListener('scroll', onScroll, { passive: true });
+</script>
